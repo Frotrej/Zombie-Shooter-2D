@@ -7,20 +7,38 @@ public class PlayerController : MonoBehaviour
     private GameObject player1;
     private float moveHorizontal;
     private float moveVertical;
+    private Vector2 moveDirection;
 
-    private float MVspeed = 0.2f;
+    private Rigidbody2D playerRigidbody2D;
+
+
+    private float MVspeed = 2.5f;
 
 
     // Update is called once per frame
-    void Update()
+    void Awake()
+    {
+        //pobranie komponentu rigidbody2D obiektu
+        playerRigidbody2D = GetComponent<Rigidbody2D>();
+        
+    }
+
+    private void FixedUpdate()
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
 
-        if (moveHorizontal != 0 || moveVertical != 0)
-        {
-            transform.position += new Vector3(moveHorizontal * MVspeed * Time.fixedDeltaTime, moveVertical * MVspeed * Time.fixedDeltaTime, 0);
-        }
-        
+        //utworzenie Vector2 na podstawie zmiennych moveHorizontal/Vertical
+        moveDirection = new Vector2 (moveHorizontal, moveVertical);
+
+        playerRigidbody2D.MovePosition(playerRigidbody2D.position + moveDirection * Time.fixedDeltaTime * MVspeed);
     }
+
+
+
+
+
+            //przemieszenie uzywane dla obiektow rigidBody2D dynamic - na ktore wplywa grawitacja
+            //transform.position += new Vector2(moveHorizontal * MVspeed * Time.fixedDeltaTime, moveVertical * MVspeed * Time.fixedDeltaTime);  
+    
 }
