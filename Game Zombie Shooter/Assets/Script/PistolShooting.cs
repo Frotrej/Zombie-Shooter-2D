@@ -4,39 +4,30 @@ using UnityEngine;
 
 public class PistolShooting : MonoBehaviour
 {
+    [SerializeField]
     int weaponDMG = 3;
-    
+    int layerMask = 1 << 8;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        if (Input.GetMouseButtonDown(0))
-        { // if left mouse button pressed...
-          // get ray starting at camera position and passing through the mouse pointer:
-          //var ray = new Ray2D();        //Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-          //var hit = new RaycastHit2D();        //RaycastHit;  allocate variable RaycastHit
+        layerMask = ~layerMask;
+    }
 
+    void FixedUpdate()
+    {
 
-            /*if (Physics2D.Raycast(ray, hit))
-            { // if something hit...
-                print("Clicked on " + hit.transform.name); // print its name
-            }
-            else
-            {
-                print("Nothing hit");
-            }*/
-        }
-
-        
-
-        RaycastHit2D detectRayHit = Physics2D.Raycast(transform.position, transform.forward);
-        if (detectRayHit.collider == null) //raycast najprawdopodobniej trafia sam siebie !
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 10f, layerMask);
+         //nie dziala no i tyle
+        if (hit)
         {
-            print($"Trafienie: {detectRayHit.transform.name}");
+            Debug.DrawLine(transform.position, hit.point, Color.red);
+            print($"Trafienie: {hit.collider.name}");
         }
         else
         {
+            Debug.DrawLine(transform.position, transform.TransformDirection(Vector2.down) * 1000, Color.green);
             print("Brak trafienia");
         }
+        print(layerMask);
     }
 }
