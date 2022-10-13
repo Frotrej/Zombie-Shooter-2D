@@ -35,8 +35,11 @@ public class PistolShooting : MonoBehaviour
                 }
                 else
                 {
+                    Vector2 shotEnd = (transform.position);
+                    shotEnd = shotEnd.normalized;
+
                     //iluzja rysowania lini prostej przez mnozenie drugiego punktu *1000
-                    Debug.DrawLine(transform.position, transform.TransformDirection(Vector2.down) * 1000, Color.magenta);
+                    Debug.DrawLine(transform.position, shotEnd * 15, Color.magenta);
 
                     //print("Brak trafienia");
                 }

@@ -5,17 +5,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private GameObject player1;
-    private float moveHorizontal;
-    private float moveVertical;
-    private Vector2 moveDirection;
+    private float moveX;
+    private float moveY;
+    
 
     private Rigidbody2D playerRigidbody2D;
+    public Animator animator;
 
 
     private float MVspeed = 2.5f;
 
 
-    // Update is called once per frame
+    
     void Awake()
     {
         //pobranie komponentu rigidbody2D obiektu
@@ -25,13 +26,20 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveVertical = Input.GetAxisRaw("Vertical");
+        moveX = Input.GetAxisRaw("Horizontal");
+        moveY = Input.GetAxisRaw("Vertical");
 
         //utworzenie Vector2 na podstawie zmiennych moveHorizontal/Vertical
-        moveDirection = new Vector2 (moveHorizontal, moveVertical);
+        Vector2 moveDirection = new Vector2 (moveX, moveY);
 
         playerRigidbody2D.MovePosition(playerRigidbody2D.position + moveDirection * Time.fixedDeltaTime * MVspeed);
+
+        animator.SetFloat("Horizontal", moveX);
+        animator.SetFloat("Vertical", moveY);
+
+        Vector2 moveDirectionNormalized = moveDirection.normalized;
+        animator.SetFloat("SPEED", moveDirectionNormalized.magnitude);
+
     }
 
 
